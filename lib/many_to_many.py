@@ -1,5 +1,5 @@
-all = []
 class Author:
+    all = []
     def __init__(self, name):
         self.name = name
         Author.all.append(self)
@@ -14,11 +14,18 @@ class Author:
     
 
 class Book:
+    all = []
     def __init__(self, title):
         self.title = title
+        Book.all.append(self)
+    def contracts(self):
+        return [contract for contract in Contract.all if contract.book == self]
+    def authors(self):
+        return [contract.author for contract in self.contracts()]
 
 
 class Contract:
+    all = []
     def __init__(self, author, book, date, royalties):
         self.author = author
         self.book = book
@@ -58,3 +65,7 @@ class Contract:
         if not isinstance(value, int):
             raise Exception
         self._royalties = value
+    @classmethod
+    def contracts_by_date(cls, date):
+        return [contract for contract in cls.all if contract.date == date]
+    
